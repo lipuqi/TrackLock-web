@@ -1,13 +1,11 @@
-package com.lettuce.air.pojo.task;
-
-import com.lettuce.air.pojo.basic.Cache;
+package com.lettuce.air.pojo.entity.task;
 
 /**
  * 命令任务类
  * @author Lando
  *
  */
-public class CommandTask extends Cache{
+public class CommandTask{
 	
 	/**
 	 * 命令内容

@@ -1,14 +1,11 @@
 package com.lettuce.air.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lettuce.air.cache.MapCache;
-import com.lettuce.air.common.controllerUtil.GenericResponse;
-import com.lettuce.air.common.controllerUtil.ResponseFormat;
-import com.lettuce.air.pojo.basic.Cache;
+import com.lettuce.air.core.controller.GenericResponse;
+import com.lettuce.air.core.controller.ResponseFormat;
 
 /**
  * 前端监控接口
@@ -19,8 +16,8 @@ import com.lettuce.air.pojo.basic.Cache;
 @RequestMapping("/monitor")
 public class MonitorController {
 	
-	@Autowired
-	private MapCache<String, Cache> mapCache;
+	//@Autowired
+	//private MapCache<String, Cache> mapCache;
 	
 	/**
 	 * 获取设备列表
@@ -28,7 +25,7 @@ public class MonitorController {
 	 */
 	@GetMapping(value = "/getDeviceList", produces = { "application/json;charset=UTF-8" })
 	public GenericResponse getDeviceList(){
-		return ResponseFormat.retParam(200, mapCache.getDeviceList());
+		return ResponseFormat.retParam(200, null);
 	}
 	
 	/**
@@ -37,7 +34,7 @@ public class MonitorController {
 	 */
 	@GetMapping(value = "/getTaskList", produces = { "application/json;charset=UTF-8" })
 	public GenericResponse getTaskList(){
-		return ResponseFormat.retParam(200, mapCache.getTaskList());
+		return ResponseFormat.retParam(200, null);
 	}
 
 }

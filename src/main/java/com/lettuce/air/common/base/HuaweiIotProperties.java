@@ -1,11 +1,11 @@
-package com.lettuce.air.common.config;
+package com.lettuce.air.common.base;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 
 @Component
-@ConfigurationProperties(prefix="huaweiIot.config")
+@ConfigurationProperties(prefix="huawei-iot.config")
 public class HuaweiIotProperties {
 	
 	//appId

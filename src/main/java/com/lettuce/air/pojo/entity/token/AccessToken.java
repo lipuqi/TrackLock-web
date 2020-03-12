@@ -1,4 +1,4 @@
-package com.lettuce.air.pojo.token;
+package com.lettuce.air.pojo.entity.token;
 
 import com.lettuce.air.common.exception.CustomException;
 import com.lettuce.air.pojo.basic.Cache;

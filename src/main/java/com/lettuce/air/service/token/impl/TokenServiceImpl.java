@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lettuce.air.cache.MapCache;
-import com.lettuce.air.pojo.token.AccessToken;
+import com.lettuce.air.pojo.entity.token.AccessToken;
 import com.lettuce.air.service.token.TokenService;
 
 /**

@@ -1,4 +1,4 @@
-package com.lettuce.air.common.controllerUtil;
+package com.lettuce.air.core.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

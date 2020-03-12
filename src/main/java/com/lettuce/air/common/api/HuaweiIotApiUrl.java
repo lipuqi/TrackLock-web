@@ -7,14 +7,14 @@ import org.apache.http.HttpResponse;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import com.lettuce.air.common.config.HuaweiIotProperties;
+import com.lettuce.air.common.base.HuaweiIotProperties;
 import com.lettuce.air.utils.https.HttpsUtil;
 import com.lettuce.air.utils.https.StreamClosedHttpResponse;
 
 import net.sf.json.JSONObject;
 
 @Component
-@ConfigurationProperties(prefix="huaweiIot.api")
+@ConfigurationProperties(prefix="huawei-iot.api")
 public class HuaweiIotApiUrl {
 	
 	//获取token

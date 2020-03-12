@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lettuce.air.common.controllerUtil.GenericResponse;
-import com.lettuce.air.common.controllerUtil.ResponseFormat;
 import com.lettuce.air.common.exception.BasicException;
 import com.lettuce.air.common.exception.CustomException;
+import com.lettuce.air.core.controller.GenericResponse;
+import com.lettuce.air.core.controller.ResponseFormat;
 import com.lettuce.air.service.device.DeviceService;
 
 /**

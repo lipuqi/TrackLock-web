@@ -1,4 +1,4 @@
-package com.lettuce.air.common.controllerUtil;
+package com.lettuce.air.core.controller;
 import java.io.Serializable;
 import java.util.Objects;
 

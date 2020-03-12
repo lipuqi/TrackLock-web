@@ -1,13 +1,14 @@
 package com.lettuce.air.service.device.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lettuce.air.cache.MapCache;
 import com.lettuce.air.common.api.HuaweiIotApiUrl;
-import com.lettuce.air.common.config.HuaweiIotProperties;
+import com.lettuce.air.common.base.HuaweiIotProperties;
 import com.lettuce.air.common.constant.PushStatus;
 import com.lettuce.air.common.exception.BasicException;
 import com.lettuce.air.common.exception.CustomException;
@@ -16,7 +17,7 @@ import com.lettuce.air.pojo.device.BasicDevice;
 import com.lettuce.air.pojo.device.Bulb;
 import com.lettuce.air.pojo.device.DeviceConstant;
 import com.lettuce.air.pojo.device.OperationPi;
-import com.lettuce.air.pojo.task.CommandTask;
+import com.lettuce.air.pojo.entity.task.CommandTask;
 import com.lettuce.air.profile.ServiceConstant;
 import com.lettuce.air.profile.command.OperationPi_QUIT_PYTHON;
 import com.lettuce.air.profile.command.SwitchBulb_ON_OFF;
@@ -31,7 +32,7 @@ import net.sf.json.JSONObject;
 @Service
 public class DeviceServiceImpl implements DeviceService {
 	
-	private static final Logger LOGGER = Logger.getLogger(DeviceServiceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DeviceServiceImpl.class);
 
 	@Autowired
 	private MapCache<String, Cache> mapCache;
@@ -150,10 +151,6 @@ public class DeviceServiceImpl implements DeviceService {
 		if(StringUtils.isEmpty(method) || value == null){
 			throw new BasicException(10002, new CustomException(DeviceServiceImpl.class, "下发命令参数为空"));
 		}
-		
-/*		if(getOperationPiStatus() == 0){
-			throw new BasicException(30001, new CustomException(DeviceServiceImpl.class, "设备已下线"));
-		}*/
 		
 		JSONObject commandData = new JSONObject();
 		JSONObject command = null;

@@ -1,6 +1,7 @@
 package com.lettuce.air.common.exception;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 基础异常类
@@ -26,7 +27,7 @@ public class CustomException extends RuntimeException {
 	public CustomException(Class clazz, String message) {
 		this.clazz = clazz;
 		this.message = message;
-		LOGGER = Logger.getLogger(clazz);
+		LOGGER = LoggerFactory.getLogger(clazz);
 		LOGGER.info(message);
 	}
 
@@ -34,7 +35,7 @@ public class CustomException extends RuntimeException {
 	public CustomException(Class clazz, String message, Exception exception) {
 		this.clazz = clazz;
 		this.message = message;
-		LOGGER = Logger.getLogger(clazz);
+		LOGGER = LoggerFactory.getLogger(clazz);
 		LOGGER.info(message, exception);
 	}
 

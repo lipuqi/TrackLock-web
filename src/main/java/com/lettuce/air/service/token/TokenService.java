@@ -1,6 +1,6 @@
 package com.lettuce.air.service.token;
 
-import com.lettuce.air.pojo.token.AccessToken;
+import com.lettuce.air.pojo.entity.token.AccessToken;
 
 /**
  * token操作的接口

@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.lettuce.air.common.api.HuaweiIotApiUrl;
-import com.lettuce.air.common.config.HuaweiIotProperties;
+import com.lettuce.air.common.base.HuaweiIotProperties;
 import com.lettuce.air.common.exception.CustomException;
-import com.lettuce.air.pojo.token.AccessToken;
+import com.lettuce.air.pojo.entity.token.AccessToken;
 import com.lettuce.air.service.token.TokenService;
 
 /**

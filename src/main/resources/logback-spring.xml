@@ -1,0 +1,36 @@
+<!-- Logback configuration. See http://logback.qos.ch/manvalndex.html -->
+<configuration scan="true" scanPeriod="10 seconds">
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <logger name="com.lettuce.air" level="DEBUG"/>
+    <!--设置日志输出路径-->
+    <property name="log.path" value="data/log"/>
+
+    <!--&lt;!&ndash;输出到控制台&ndash;&gt;-->
+    <!--<appender name="console" class="ch.qos.logback.core.ConsoleAppender">-->
+    <!--<encoder>-->
+    <!--<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%msg%n-->
+    <!--</Pattern>-->
+    <!--</encoder>-->
+    <!--</appender>-->
+
+    <!--按天生成日志-->
+    <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${log.path}/dsly-trackLock-info.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.path}/dsly-trackLock-info-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!--<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">-->
+            <!--<maxFileSize>100MB</maxFileSize>-->
+            <!--</timeBasedFileNamingAndTriggeringPolicy>-->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%msg%n
+            </Pattern>
+        </layout>
+    </appender>
+
+    <root level="INFO">
+        <!--<appender-ref ref="console"/>-->
+        <appender-ref ref="INFO_FILE"/>
+    </root>
+</configuration>
