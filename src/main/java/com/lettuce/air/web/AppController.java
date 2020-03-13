@@ -2,14 +2,14 @@ package com.lettuce.air.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lettuce.air.common.exception.BasicException;
-import com.lettuce.air.common.exception.CustomException;
 import com.lettuce.air.core.controller.GenericResponse;
 import com.lettuce.air.core.controller.ResponseFormat;
-import com.lettuce.air.service.device.DeviceService;
+import com.lettuce.air.service.device.DeviceStatusService;
 
 /**
  * app端对外接口
@@ -20,41 +20,19 @@ import com.lettuce.air.service.device.DeviceService;
 @RequestMapping("/app")
 public class AppController {
 	
+	
+	
 	@Autowired
-	private DeviceService deviceService;
+	private DeviceStatusService deviceStatusService;
 	
 	/**
-	 * 获取灯的当前状态
+	 * 开锁
 	 * @return
 	 */
-	@GetMapping(value = "/getBulbStatus", produces = { "application/json;charset=UTF-8" })
-	public GenericResponse getBulbStatus(){
-		return ResponseFormat.retParam(200, deviceService.getBulbStatus());
-	}
-	
-	/**
-	 * 获取设备当前状态
-	 * @return
-	 */
-	@GetMapping(value = "/getOperationPiStatus", produces = { "application/json;charset=UTF-8" })
-	public GenericResponse getOperationPiStatus(){
-		return ResponseFormat.retParam(200, deviceService.getOperationPiStatus());
-	}
-	
-	/**
-	 * 发送一条指令
-	 * @param method
-	 * @param value
-	 * @return
-	 */
-	@GetMapping("/sendCommand")
-	public GenericResponse sendCommand(String method, Integer value){
+	@GetMapping(value = "/unlock/{imei}")
+	public GenericResponse unlock(@PathVariable String imei){
 		try {
-			deviceService.sendCommand(method, value);
-		} catch (CustomException ex) {
-			throw ex;
-		} catch (BasicException exc) {
-			throw exc;
+			deviceStatusService.unLockCommand(imei);
 		} catch (Exception e) {
 			throw new BasicException(1000, e);
 		}

@@ -16,8 +16,6 @@ import com.lettuce.air.core.controller.ResponseFormat;
 @RequestMapping("/monitor")
 public class MonitorController {
 	
-	//@Autowired
-	//private MapCache<String, Cache> mapCache;
 	
 	/**
 	 * 获取设备列表

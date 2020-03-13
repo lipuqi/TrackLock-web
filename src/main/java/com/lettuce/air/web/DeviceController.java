@@ -10,9 +10,10 @@ import com.lettuce.air.common.exception.BasicException;
 import com.lettuce.air.common.exception.CustomException;
 import com.lettuce.air.core.controller.GenericResponse;
 import com.lettuce.air.core.controller.ResponseFormat;
-import com.lettuce.air.service.device.DeviceService;
-
-import net.sf.json.JSONObject;
+import com.lettuce.air.pojo.req.CommandReq;
+import com.lettuce.air.pojo.req.DeviceDataReq;
+import com.lettuce.air.service.NorthInter.IssueCommandService;
+import com.lettuce.air.service.NorthInter.ReceiveDataService;
 
 /**
  * 设备端对接接口
@@ -22,9 +23,13 @@ import net.sf.json.JSONObject;
 @RestController
 @RequestMapping("/device")
 public class DeviceController {
+		
+	@Autowired
+	private ReceiveDataService receiveDataService;
 	
 	@Autowired
-	private DeviceService deviceService;
+	private IssueCommandService issueCommandService;
+
 	
 	/**
 	 * 上报数据
@@ -32,9 +37,9 @@ public class DeviceController {
 	 * @return
 	 */
 	@PostMapping(value = "/deviceDataChanged", produces = { "application/json;charset=UTF-8" })
-	public GenericResponse deviceDataChanged(@RequestBody JSONObject result){
+	public GenericResponse deviceDataChanged(@RequestBody DeviceDataReq deviceDataReq){
 		try {
-			deviceService.getDeviceData(result);
+			receiveDataService.getDeviceData(deviceDataReq);
 		} catch (CustomException ex) {
 			throw ex;
 		} catch (Exception e) {
@@ -49,9 +54,9 @@ public class DeviceController {
 	 * @return
 	 */
 	@PostMapping(value = "/commandStatus", produces = { "application/json;charset=UTF-8" })
-	public GenericResponse commandStatus(@RequestBody JSONObject result){
+	public GenericResponse commandStatus(@RequestBody CommandReq commandReq){
 		try {
-			deviceService.getCommandStatus(result);
+			issueCommandService.getCommandStatus(commandReq);
 		} catch (CustomException ex) {
 			throw ex;
 		} catch (Exception e) {

@@ -14,9 +14,6 @@ public class HuaweiIotProperties {
 	//app密钥
 	private String appSecret;
 	
-	//设备唯一标识符
-	private String deviceId;
-	
 	//命令过期时间
 	private Long commandExecuteTime;
 	
@@ -37,14 +34,6 @@ public class HuaweiIotProperties {
 
 	public void setAppSecret(String appSecret) {
 		this.appSecret = appSecret;
-	}
-
-	public String getDeviceId() {
-		return deviceId;
-	}
-
-	public void setDeviceId(String deviceId) {
-		this.deviceId = deviceId;
 	}
 
 	public Long getCommandExecuteTime() {
