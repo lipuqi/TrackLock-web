@@ -23,6 +23,13 @@ public class DeviceServiceDataReq {
 	 * 事件发生时间，时间格式 yyyymmddThhmmssZ，例如20151212T121212Z。
 	 */
 	private String eventTime;
+	
+
+	@Override
+	public String toString() {
+		return "DeviceServiceDataReq [serviceId=" + serviceId + ", serviceType=" + serviceType + ", data=" + data.toString()
+				+ ", eventTime=" + eventTime + "]";
+	}
 
 	public String getServiceId() {
 		return serviceId;

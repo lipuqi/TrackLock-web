@@ -1,5 +1,7 @@
 package com.lettuce.air.service.task.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -19,13 +21,18 @@ public class DeviceTaskServiceImpl extends ServiceImpl<DeviceTaskMapper, DeviceT
 	
 	@Override
 	public void addDeviceTask(DeviceTask deviceTask) {
-		save(deviceTask);
+		baseMapper.insert(deviceTask);
 	}
 
 
 	@Override
 	public void updateDeviceTask(DeviceTask deviceTask) {
 		updateById(deviceTask);
+	}
+
+	@Override
+	public List<DeviceTask> seleceTaskList(String imei) {
+		return baseMapper.selectList(new QueryWrapper<DeviceTask>().eq("imei", imei).orderByDesc("create_time"));
 	}
 
 }

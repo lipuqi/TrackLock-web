@@ -8,6 +8,7 @@ import com.lettuce.air.common.constant.ServiceConstant;
 import com.lettuce.air.pojo.req.DeviceDataReq;
 import com.lettuce.air.service.NorthInter.ReceiveDataService;
 import com.lettuce.air.service.device.DeviceStatusService;
+import com.lettuce.air.service.device.DeviceUnlockInfoService;
 import com.lettuce.air.service.position.PositionInfoService;
 
 @Service
@@ -18,6 +19,9 @@ public class ReceiveDataServiceImpl implements ReceiveDataService {
 	
 	@Autowired
 	private PositionInfoService positionInfoService;
+	
+	@Autowired
+	private DeviceUnlockInfoService deviceUnlockInfoService;
 	
 	@Override
 	public void getDeviceData(DeviceDataReq deviceDataReq) throws Exception {
@@ -30,7 +34,7 @@ public class ReceiveDataServiceImpl implements ReceiveDataService {
 				positionInfoService.addPositionInfo(deviceDataReq);
 				break;
 			case ServiceConstant.Unlock:
-				deviceStatusService.saveLockStatus(deviceDataReq);
+				deviceUnlockInfoService.saveLockStatus(deviceDataReq);
 				break;
 			case ServiceConstant.GlobalState:
 				deviceStatusService.saveDeviceStatus(deviceDataReq);

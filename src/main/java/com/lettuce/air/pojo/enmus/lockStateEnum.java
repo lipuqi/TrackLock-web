@@ -3,10 +3,10 @@ package com.lettuce.air.pojo.enmus;
 import com.baomidou.mybatisplus.core.enums.IEnum;
 
 public enum lockStateEnum implements IEnum<Integer> {
-
-    LOCK(0, "开锁"),
-
-    UN_LOCK(1, "解锁");
+	
+	
+	UN_LOCK(0, "开锁"),
+    LOCK(1, "闭锁");
 
     /**
      * key值

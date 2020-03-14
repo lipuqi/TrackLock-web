@@ -3,15 +3,16 @@ package com.lettuce.air.core.config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
  * 默认页面配置
  * @author Lando
  *
  */
+@SuppressWarnings("deprecation")
 @Configuration
-public class DefaultView extends WebMvcConfigurationSupport  {
+public class DefaultView extends WebMvcConfigurerAdapter{
 
 	@Override
     public void addViewControllers(ViewControllerRegistry registry) {

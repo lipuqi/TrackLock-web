@@ -1,5 +1,7 @@
 package com.lettuce.air.service.task;
 
+import java.util.List;
+
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lettuce.air.pojo.entity.task.DeviceTask;
 
@@ -23,5 +25,11 @@ public interface DeviceTaskService extends IService<DeviceTask> {
 	 * @param deviceTask
 	 */
 	void updateDeviceTask(DeviceTask deviceTask);
+	
+	/**
+	 * 根据设备获取任务列表
+	 * @return
+	 */
+	List<DeviceTask> seleceTaskList(String imei);
 	
 }

@@ -16,6 +16,11 @@ public class CommandReq {
 	 * 命令状态信息
 	 */
 	private CommandStatusReq result;
+	
+	@Override
+	public String toString() {
+		return "CommandReq [deviceId=" + deviceId + ", commandId=" + commandId + ", result=" + result.toString() + "]";
+	}
 
 	public String getDeviceId() {
 		return deviceId;

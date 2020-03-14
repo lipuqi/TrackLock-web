@@ -1,5 +1,7 @@
 package com.lettuce.air.web;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +17,7 @@ import com.lettuce.air.pojo.req.DeviceDataReq;
 import com.lettuce.air.service.NorthInter.IssueCommandService;
 import com.lettuce.air.service.NorthInter.ReceiveDataService;
 
+
 /**
  * 设备端对接接口
  * @author Lando
@@ -23,6 +26,8 @@ import com.lettuce.air.service.NorthInter.ReceiveDataService;
 @RestController
 @RequestMapping("/device")
 public class DeviceController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(DeviceController.class);
 		
 	@Autowired
 	private ReceiveDataService receiveDataService;
@@ -38,6 +43,8 @@ public class DeviceController {
 	 */
 	@PostMapping(value = "/deviceDataChanged", produces = { "application/json;charset=UTF-8" })
 	public GenericResponse deviceDataChanged(@RequestBody DeviceDataReq deviceDataReq){
+		
+		logger.debug(">>>>>>>>>>>>deviceDataChanged<<<<<<<<<<<<<<<" + deviceDataReq.toString());
 		try {
 			receiveDataService.getDeviceData(deviceDataReq);
 		} catch (CustomException ex) {
@@ -55,6 +62,8 @@ public class DeviceController {
 	 */
 	@PostMapping(value = "/commandStatus", produces = { "application/json;charset=UTF-8" })
 	public GenericResponse commandStatus(@RequestBody CommandReq commandReq){
+		
+		logger.debug(">>>>>>>>>>>>commandStatus<<<<<<<<<<<<<<<" + commandReq.toString());
 		try {
 			issueCommandService.getCommandStatus(commandReq);
 		} catch (CustomException ex) {

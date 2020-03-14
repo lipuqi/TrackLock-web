@@ -1,10 +1,14 @@
 package com.lettuce.air.service.position.impl;
 
 import java.util.Date;
+import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lettuce.air.common.api.YingyanApiUrl;
 import com.lettuce.air.common.constant.ServiceConstant;
@@ -23,6 +27,8 @@ import net.sf.json.JSONObject;
 @Service
 public class PositionInfoServiceImpl extends ServiceImpl<PositionInfoMapper, PositionInfo>
 		implements PositionInfoService {
+	
+	private static final Logger logger = LoggerFactory.getLogger(PositionInfoServiceImpl.class);
 
 	@Autowired
 	private DeviceStatusService deviceStatusService;
@@ -42,10 +48,12 @@ public class PositionInfoServiceImpl extends ServiceImpl<PositionInfoMapper, Pos
 		positionInfo.setDeviceId(deviceStatus.getDeviceId());
 		positionInfo.setImei(deviceStatus.getImei());
 		positionInfo.setCreateTime(eventTime);
-		save(positionInfo);
+		baseMapper.insert(positionInfo);
 
-		yingyanApiUrl.addpoint(positionInfo.getImei(), positionInfo.getLatitude(), positionInfo.getLongitude(),
+		String res = yingyanApiUrl.addpoint(positionInfo.getImei(), positionInfo.getLatitude(), positionInfo.getLongitude(),
 				positionInfo.getRecordTime().getTime(), positionInfo.getPositionType().getDesc());
+		
+		logger.debug(">>>>>>>>>>>>>>>>>>yingyan addpoint<<<<<<<<<<<<<<<<<<<<<" + res);
 	}
 
 	@Override
@@ -63,6 +71,11 @@ public class PositionInfoServiceImpl extends ServiceImpl<PositionInfoMapper, Pos
 		deviceTask.setData(data.toString());
 
 		issueCommandService.sendCommand(deviceTask);
+	}
+
+	@Override
+	public List<PositionInfo> selecePositionListByImei(String imei) throws Exception {
+		return baseMapper.selectList(new QueryWrapper<PositionInfo>().eq("imei", imei).orderByDesc("record_time"));
 	}
 
 }

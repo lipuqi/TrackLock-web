@@ -16,6 +16,11 @@ public class DeviceDataReq {
 	 * 设备的服务数据
 	 */
 	private DeviceServiceDataReq service;
+	
+	@Override
+	public String toString() {
+		return "DeviceDataReq [notifyType=" + notifyType + ", deviceId=" + deviceId + ", service=" + service.toString() + "]";
+	}
 
 	public String getNotifyType() {
 		return notifyType;

@@ -1,5 +1,7 @@
 package com.lettuce.air.pojo.req;
 
+import com.alibaba.fastjson.JSONObject;
+
 public class CommandStatusReq {
 
 	/**
@@ -10,7 +12,12 @@ public class CommandStatusReq {
 	/**
 	 * 命令结果详细信息
 	 */
-	private String resultDetail;
+	private JSONObject resultDetail;
+	
+	@Override
+	public String toString() {
+		return "CommandStatusReq [resultCode=" + resultCode + "]";
+	}
 
 	public String getResultCode() {
 		return resultCode;
@@ -20,12 +27,18 @@ public class CommandStatusReq {
 		this.resultCode = resultCode;
 	}
 
-	public String getResultDetail() {
+	/**
+	 * @return the resultDetail
+	 */
+	public JSONObject getResultDetail() {
 		return resultDetail;
 	}
 
-	public void setResultDetail(String resultDetail) {
+	/**
+	 * @param resultDetail the resultDetail to set
+	 */
+	public void setResultDetail(JSONObject resultDetail) {
 		this.resultDetail = resultDetail;
 	}
-	
+
 }

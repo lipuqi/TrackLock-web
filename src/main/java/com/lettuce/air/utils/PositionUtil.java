@@ -11,7 +11,7 @@ public class PositionUtil {
 	public static String parseLonlan(String lonlan) {
 		// 数据格式化
 		DecimalFormat decimalFormat = new DecimalFormat();
-		decimalFormat.applyPattern("#.00000");
+		decimalFormat.applyPattern("#.000000");
 		double a = Double.valueOf(lonlan);
 		int a1 = (int) ((a) / 100);
 		double a2 = (a) % 100.0 / 60;

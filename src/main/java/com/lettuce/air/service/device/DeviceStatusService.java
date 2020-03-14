@@ -1,6 +1,7 @@
 package com.lettuce.air.service.device;
 
 import java.text.ParseException;
+import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lettuce.air.pojo.enmus.StateTypeEnum;
@@ -26,17 +27,12 @@ public interface DeviceStatusService extends IService<DeviceStatus> {
 	/**
 	 * 添加设备状态
 	 */
-	void saveDeviceStatus(DeviceDataReq deviceDataReq) throws ParseException ;
+	void saveDeviceStatus(DeviceDataReq deviceDataReq) throws ParseException;
 	
 	/**
-	 * 添加锁状态
+	 * 修改设备状态
 	 */
-	void saveLockStatus(DeviceDataReq deviceDataReq) throws ParseException ;
-	
-	/**
-	 * 开锁指令
-	 */
-	void unLockCommand(String imei) throws Exception;
+	void updateDeviceStatus(DeviceStatus deviceStatus);
 	
 	/**
 	 * 获取设备状态
@@ -47,5 +43,12 @@ public interface DeviceStatusService extends IService<DeviceStatus> {
 	 * 设置设备配置
 	 */
 	void setStateIntervalCommand(String imei, StateTypeEnum stateType, Integer interval) throws Exception;
+	
+	/**
+	 * 获取设备列表
+	 * @return
+	 * @throws Exception
+	 */
+	List<DeviceStatus> seleceDeviceList() throws Exception;
 	
 }

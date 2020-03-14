@@ -3,7 +3,7 @@
 
 <head>
 <meta charset="UTF-8">
-<title>监控面板</title>
+<title>轨迹锁监控面板</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link
 	href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
@@ -21,30 +21,43 @@ body {
 
 <body>
 	<div class="container">
-		<h1>IOT监控面板</h1>
+		<h1>轨迹锁监控面板</h1><button type="button" class="btn btn-info">地图</button>
 		<div class="row">
 			<div class="col-md-12">
 				<table class="table">
 					<caption>所有设备状态情况</caption>
 					<thead>
 						<tr>
-							<th>名称</th>
-							<th>状态</th>
-							<th>更新时间</th>
+							<th>IMEI</th>
+							<th>设备编号</th>
+							<th>电量</th>
+							<th>电量更新时间</th>
+							<th>锁状态</th>
+							<th>锁状态更新时间</th>
+							<th>状态上传间隔</th>
+							<th>定位上传间隔</th>
 						</tr>
 					</thead>
 					<tbody id="device">
 					</tbody>
 				</table>
 			</div>
+			<div class="btn-group">
+				<button type="button" class="btn btn-default" onclick="unlock()">开锁</button>
+				<button type="button" class="btn btn-default" onclick="getDeviceState()">获取设备状态</button>
+				<button type="button" class="btn btn-default">设置设备配置</button>
+				<button type="button" class="btn btn-default" onclick="getPosition()">立即定位</button>
+			</div>
 			<div class="col-md-12">
 				<table class="table">
 					<caption>命令下发情况</caption>
 					<thead>
 						<tr>
-							<th>命令下发ID</th>
-							<th>命令</th>
+							<th>IMEI</th>
+							<th>命令内容</th>
 							<th>状态</th>
+							<th>下发数据</th>
+							<th>创建时间</th>
 							<th>执行时间</th>
 						</tr>
 					</thead>
@@ -66,7 +79,7 @@ body {
 		function init() {
 			$
 					.ajax({
-						url : "monitor/getDeviceList",
+						url : "/monitor/getDeviceList",
 						dataType : "json",
 						success : function(data) {
 							if (data.code == 200) {
@@ -75,40 +88,42 @@ body {
 									var html = "";
 									for (var i = 0; i < data.length; i++) {
 										html += "<tr>";
-										if (data[i].deviceKey == "Bulb") {
-											html += "<td>灯</td>";
-											if (data[i].status == 1) {
-												html += "<td class='text-success'>开启</td>";
-											} else {
-												html += "<td class='text-danger'>关闭</td>";
-											}
+										html += "<td>" + data[i].imei + "</td>";
+										html += "<td>" + data[i].deviceId + "</td>";
+										html += "<td>" + data[i].battery + "</td>";
+										html += "<td>" + crtTimeFtt(data[i].batteryTime) + "</td>";
+										if(data[i].lockState == "UN_LOCK"){
+											html += "<td>闭锁</td>";
 										} else {
-											html += "<td>设备状态</td>"
-											if (data[i].status == 1) {
-												html += "<td class='text-success'>在线</td>";
-											} else {
-												html += "<td class='text-danger'>离线</td>";
-											}
+											html += "<td>开锁</td>";
+										}
+										if(data[i].lockTime){
+											html += "<td>"
+													+ crtTimeFtt(data[i].lockTime)
+													+ "</td>";
+										} else {
+											html += "<td></td>";
 										}
 
-										html += "<td>"
-												+ crtTimeFtt(data[i].updateTime)
-												+ "</td>";
+										html += "<td>" + data[i].stateInterval + "</td>";
+										html += "<td>" + data[i].positionInterval + "</td>";
 										html += "</tr>";
 									}
 									$("#device").html(html);
 								}
 							} else {
+								alert("请求设备列表失败");
 								console.log("请求设备列表失败: " + data.code + "--"
 										+ data.message)
 							}
 						},
 						fail : function(error) {
+							alert("网络请求失败");
 							console.log("网络请求失败：" + error)
 						}
 					});
 			$.ajax({
-				url : "monitor/getTaskList",
+				url : "/monitor/getTaskList/863716040748763",
 				dataType : "json",
 				success : function(data) {
 					if (data.code == 200) {
@@ -117,16 +132,9 @@ body {
 							var html = "";
 							for (var i = 0; i < data.length; i++) {
 								html += "<tr>";
-								html += "<td>" + data[i].commandId + "</td>";
-								if (data[i].method == "ON_OFF") {
-									html += "<td>开/关灯</td>";
-								} else if (data[i].method == "QUERY_STATUS") {
-									html += "<td>查询灯的状态</td>"
-								} else if (data[i].method == "QUIT_PYTHON") {
-									html += "<td>主动下线</td>"
-								}
-
-								switch (data[i].status) {
+								html += "<td>" + data[i].imei + "</td>";
+								html += "<td>" + data[i].serviceId + "</td>";
+								switch (data[i].taskStatus) {
 								case "PENDING":
 									html += "<td>缓存未下发</td>";
 									break;
@@ -152,23 +160,94 @@ body {
 									html += "<td>正在下发</td>";
 									break;
 								}
-								html += "<td>"
-										+ crtTimeFtt(data[i].expiresIn - 61000)
-										+ "</td>";
-								html += "</tr>";
+								html += "<td>" + data[i].data + "</td>";
+								if(data[i].createTime){
+									html += "<td>"
+											+ crtTimeFtt(data[i].createTime)
+											+ "</td>";
+								} else {
+									html += "<td></td>";
+								}
+								if(data[i].executeTime){
+									html += "<td>"
+											+ crtTimeFtt(data[i].executeTime)
+											+ "</td>";
+									html += "</tr>";
+								} else {
+									html += "<td></td>";
+								}
 							}
 							$("#task").html(html);
 						}
 					} else {
+						alert("请求任务列表失败");
 						console.log("请求任务列表失败: " + data.code + "--"
 								+ data.message)
 					}
 				},
 				fail : function(error) {
+					alert("网络请求失败");
 					console.log("网络请求失败：" + error)
 				}
 			});
 
+		}
+		function getDeviceState() {
+			$.ajax({
+						url : "/command/getDeviceState/863716040748763",
+						dataType : "json",
+						success : function(data) {
+							if (data.code == 200) {
+								alert("获取设备状态指令下发成功");
+							} else {
+								alert("获取设备状态指令下发失败");
+								console.log("获取设备状态指令下发失败: " + data.code + "--"
+										+ data.message)
+							}
+						},
+						fail : function(error) {
+							alert("网络请求失败");
+							console.log("网络请求失败：" + error)
+						}
+					});
+		}
+		function getPosition() {
+			$.ajax({
+				url : "/command/getPosition/863716040748763",
+				dataType : "json",
+				success : function(data) {
+					if (data.code == 200) {
+						alert("立即定位指令下发成功");
+					} else {
+						alert("立即定位下发失败");
+						console.log("立即定位下发失败: " + data.code + "--"
+								+ data.message)
+					}
+				},
+				fail : function(error) {
+					alert("网络请求失败");
+					console.log("网络请求失败：" + error)
+				}
+			});
+		}
+		function unlock() {
+			$.ajax({
+				url : "/command/unlock/863716040748763",
+				dataType : "json",
+				success : function(data) {
+					if (data.code == 200) {
+						alert("开锁指令下发成功");
+					} else {
+						alert("开锁指令下发失败");
+						console.log("开锁指令下发失败: " + data.code + "--"
+								+ data.message)
+					}
+				},
+				fail : function(error) {
+					alert("网络请求失败");
+					console.log("网络请求失败：" + error)
+				}
+			});
 		}
 
 		//创建时间格式化显示
