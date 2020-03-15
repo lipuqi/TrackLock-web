@@ -1,5 +1,6 @@
 package com.lettuce.air.service.position.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,13 +22,14 @@ import com.lettuce.air.service.NorthInter.IssueCommandService;
 import com.lettuce.air.service.device.DeviceStatusService;
 import com.lettuce.air.service.position.PositionInfoService;
 import com.lettuce.air.utils.DateUtil;
+import com.lettuce.air.utils.GpsUtil;
 
 import net.sf.json.JSONObject;
 
 @Service
 public class PositionInfoServiceImpl extends ServiceImpl<PositionInfoMapper, PositionInfo>
 		implements PositionInfoService {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(PositionInfoServiceImpl.class);
 
 	@Autowired
@@ -50,9 +52,10 @@ public class PositionInfoServiceImpl extends ServiceImpl<PositionInfoMapper, Pos
 		positionInfo.setCreateTime(eventTime);
 		baseMapper.insert(positionInfo);
 
-		String res = yingyanApiUrl.addpoint(positionInfo.getImei(), positionInfo.getLatitude(), positionInfo.getLongitude(),
-				positionInfo.getRecordTime().getTime(), positionInfo.getPositionType().getDesc());
-		
+		String res = yingyanApiUrl.addpoint(positionInfo.getImei(), positionInfo.getLatitude(),
+				positionInfo.getLongitude(), positionInfo.getRecordTime().getTime(),
+				positionInfo.getPositionType().getDesc());
+
 		logger.debug(">>>>>>>>>>>>>>>>>>yingyan addpoint<<<<<<<<<<<<<<<<<<<<<" + res);
 	}
 
@@ -76,6 +79,22 @@ public class PositionInfoServiceImpl extends ServiceImpl<PositionInfoMapper, Pos
 	@Override
 	public List<PositionInfo> selecePositionListByImei(String imei) throws Exception {
 		return baseMapper.selectList(new QueryWrapper<PositionInfo>().eq("imei", imei).orderByDesc("record_time"));
+	}
+
+	@Override
+	public List<PositionInfo> selecePositionListByImeiBD(String imei) throws Exception {
+		List<PositionInfo> newlist = new ArrayList<>();
+		List<PositionInfo> list = baseMapper.selectList(new QueryWrapper<PositionInfo>().eq("imei", imei).orderByDesc("record_time"));
+		for (PositionInfo positionInfo : list) {
+			String latitude = positionInfo.getLatitude();
+			String longitude = positionInfo.getLongitude();
+			String[] latlon = GpsUtil.gcj02_To_Bd09(latitude, longitude);
+
+			positionInfo.setLatitude(latlon[0]);
+			positionInfo.setLongitude(latlon[1]);
+			newlist.add(positionInfo);
+		}
+		return newlist;
 	}
 
 }

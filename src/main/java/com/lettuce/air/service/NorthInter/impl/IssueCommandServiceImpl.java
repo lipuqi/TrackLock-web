@@ -15,6 +15,7 @@ import com.lettuce.air.pojo.entity.task.DeviceTask;
 import com.lettuce.air.pojo.req.CommandReq;
 import com.lettuce.air.service.NorthInter.IssueCommandService;
 import com.lettuce.air.service.task.DeviceTaskService;
+import com.lettuce.air.utils.DateUtil;
 import com.lettuce.air.utils.TokenUtil;
 
 
@@ -59,7 +60,7 @@ public class IssueCommandServiceImpl implements IssueCommandService {
 			deviceTask.setResultDetail(ResultDetail.toString());
 		}
 		
-		Date nowDate = new Date();
+		Date nowDate = DateUtil.getDaDate();
 		switch (tackState) {
 		case DELIVERED:
 			deviceTask.setAssignTime(nowDate);

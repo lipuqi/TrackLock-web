@@ -16,12 +16,19 @@ body {
 	color: #333333;
 	background-color: #ffffff;
 }
+		#map_container {
+		    width: 60%;
+		    height: 300px;
+		    margin-left: 380px;
+		}
 </style>
 </head>
 
 <body>
+<div id="map_container"></div>
 	<div class="container">
-		<h1>轨迹锁监控面板</h1><button type="button" class="btn btn-info">地图</button>
+		<h1>轨迹锁监控面板</h1>
+		<a href="map.html"><button type="button" class="btn btn-info" >轨迹地图</button></a>
 		<div class="row">
 			<div class="col-md-12">
 				<table class="table">
@@ -67,12 +74,29 @@ body {
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript" src="https://api.map.baidu.com/api?v=1.0&type=webgl&ak=1t8Ue1GK9Vu7z2YWzGDA3nx3KYqXbkRN"></script>
+	<script type="text/javascript" src="https://code.bdstatic.com/npm/mapvgl@1.0.0-beta.40/dist/mapvgl.min.js"></script>
 	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
 	<script
 		src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script>
+		var bmapgl = new BMapGL.Map('map_container');
+		var point = new BMapGL.Point(120.395927, 31.334408);
+		bmapgl.setTilt(50);
+		bmapgl.setHeading(0);
+		bmapgl.centerAndZoom(point, 13);
+		bmapgl.enableScrollWheelZoom(true); 
+		bmapgl.setMapStyleV2({     
+			  styleId: 'dceadbbcb6910ebf541f913a4d4a7371'
+			});
+		var view = new mapvgl.View({
+			map: bmapgl
+		});
+		view.startAnimation();
+	
 		$(document).ready(function() {
-			init()
+			init();
+			initMap();
 			setInterval(init, 5000);
 		});
 
@@ -192,6 +216,50 @@ body {
 			});
 
 		}
+		
+		function initMap() {
+			$.ajax({
+						url : "/monitor/getPositionListByImeiBD/863716040748763",
+						dataType : "json",
+						success : function(rs) {
+							if (rs.code == 200) {
+								rs = rs.datas;
+								var data = [];
+								var traj = [];
+								if (rs.length != 0) {
+									for (var key in rs) {
+										var group = rs[key];
+										traj.push([
+											group.longitude,
+											group.latitude
+										]);
+									}
+									data.push({
+										geometry: {
+											type: 'LineString',
+											coordinates: traj
+										}
+									});
+								}
+								var lineLayer = new mapvgl.SimpleLineLayer({
+									blend: 'lighter',
+									color: 'rgba(255, 71, 26, 0.8)',
+								});
+								lineLayer.setData(data);
+								view.addLayer(lineLayer);
+							} else {
+								alert("请求设备列表失败");
+								console.log("请求设备列表失败: " + data.code + "--"
+										+ data.message)
+							}
+						},
+						fail : function(error) {
+							alert("网络请求失败");
+							console.log("网络请求失败：" + error)
+						}
+					});
+			}
+		
 		function getDeviceState() {
 			$.ajax({
 						url : "/command/getDeviceState/863716040748763",

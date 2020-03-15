@@ -26,4 +26,13 @@ public interface PositionInfoService extends IService<PositionInfo> {
 	 * @throws Exception
 	 */
 	List<PositionInfo> selecePositionListByImei(String imei) throws Exception;
+	
+	/**
+	 * 根据设备获取定位列表(百度)
+	 * @param imei
+	 * @return
+	 * @throws Exception
+	 */
+	List<PositionInfo> selecePositionListByImeiBD(String imei) throws Exception;
+	
 }

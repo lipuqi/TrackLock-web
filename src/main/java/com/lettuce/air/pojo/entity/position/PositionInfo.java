@@ -143,12 +143,14 @@ public class PositionInfo extends Model<PositionInfo>{
 	public static PositionInfo parseJSON(JSONObject obj) {
 		PositionInfo positionInfo = null;
 		try {
-			if(obj.containsKey("longitude")) {
+			if(obj.containsKey("longitude") && obj.containsKey("latitude")) {
 				positionInfo = new PositionInfo();
-				positionInfo.setLongitude(PositionUtil.parseLonlan(obj.getString("longitude")));
-				if(obj.containsKey("latitude")) {
-					positionInfo.setLatitude(PositionUtil.parseLonlan(obj.getString("latitude")));
-				}
+				String latitude = obj.getString("latitude");
+				String longitude = obj.getString("longitude");
+				String[] latlon = PositionUtil.parseLonlan(latitude, longitude);
+				
+				positionInfo.setLatitude(latlon[0]);
+				positionInfo.setLongitude(latlon[1]);
 				if(obj.containsKey("positionDate")) {
 					positionInfo.setRecordTime(PositionUtil.parseUTCtime(obj.getString("positionDate")));
 				}

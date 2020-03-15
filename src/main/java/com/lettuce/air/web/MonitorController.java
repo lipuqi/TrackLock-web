@@ -110,5 +110,21 @@ public class MonitorController {
 		}
 		return ResponseFormat.retParam(200, positionList);
 	}
+	
+	/**
+	 * 根据设备获取定位列表(百度)
+	 * @return
+	 */
+	@GetMapping(value = "/getPositionListByImeiBD/{imei}")
+	public GenericResponse getPositionListByImeiBD(@PathVariable String imei){
+		List<PositionInfo> positionList = null;
+		try {
+			positionList = positionInfoService.selecePositionListByImeiBD(imei);
+		} catch (Exception e) {
+			throw new BasicException(1000, e);
+		}
+		return ResponseFormat.retParam(200, positionList);
+	}
+	
 
 }
