@@ -1,5 +1,6 @@
 package com.lettuce.air.pojo.entity.position;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 
 import com.alibaba.fastjson.annotation.JSONField;
@@ -8,7 +9,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.lettuce.air.common.exception.CustomException;
 import com.lettuce.air.pojo.enmus.PositionTypeEnum;
-import com.lettuce.air.utils.PositionUtil;
+import com.lettuce.air.utils.DateUtil;
+import com.lettuce.air.utils.GpsUtil;
 
 import net.sf.json.JSONObject;
 
@@ -141,18 +143,20 @@ public class PositionInfo extends Model<PositionInfo>{
 	}
 
 	public static PositionInfo parseJSON(JSONObject obj) {
+		DecimalFormat decimalFormat = new DecimalFormat();
+		decimalFormat.applyPattern("#.000000");
 		PositionInfo positionInfo = null;
 		try {
 			if(obj.containsKey("longitude") && obj.containsKey("latitude")) {
 				positionInfo = new PositionInfo();
 				String latitude = obj.getString("latitude");
 				String longitude = obj.getString("longitude");
-				String[] latlon = PositionUtil.parseLonlan(latitude, longitude);
+				double[] gaodeGps = GpsUtil.toGCJ02Point(Double.parseDouble(latitude), Double.parseDouble(longitude), 7);// 进行纠偏
 				
-				positionInfo.setLatitude(latlon[0]);
-				positionInfo.setLongitude(latlon[1]);
+				positionInfo.setLatitude(decimalFormat.format(gaodeGps[0]));
+				positionInfo.setLongitude(decimalFormat.format(gaodeGps[1]));
 				if(obj.containsKey("positionDate")) {
-					positionInfo.setRecordTime(PositionUtil.parseUTCtime(obj.getString("positionDate")));
+					positionInfo.setRecordTime(DateUtil.parseUTCtime(obj.getString("positionDate")));
 				}
 				if(obj.containsKey("positionType")) {
 					PositionTypeEnum positionType = PositionTypeEnum.getObj(obj.getInt("positionType"));

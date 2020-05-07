@@ -1,0 +1,57 @@
+{
+  "groups": [
+    {
+      "name": "huawei-iot.api",
+      "type": "com.lettuce.air.common.api.HuaweiIotApiUrl",
+      "sourceType": "com.lettuce.air.common.api.HuaweiIotApiUrl"
+    },
+    {
+      "name": "huawei-iot.config",
+      "type": "com.lettuce.air.common.base.HuaweiIotProperties",
+      "sourceType": "com.lettuce.air.common.base.HuaweiIotProperties"
+    },
+    {
+      "name": "yingyan.api",
+      "type": "com.lettuce.air.common.api.YingyanApiUrl",
+      "sourceType": "com.lettuce.air.common.api.YingyanApiUrl"
+    }
+  ],
+  "properties": [
+    {
+      "name": "huawei-iot.config.app-i-d",
+      "type": "java.lang.String",
+      "sourceType": "com.lettuce.air.common.base.HuaweiIotProperties"
+    },
+    {
+      "name": "huawei-iot.config.app-secret",
+      "type": "java.lang.String",
+      "sourceType": "com.lettuce.air.common.base.HuaweiIotProperties"
+    },
+    {
+      "name": "huawei-iot.config.command-callback-url",
+      "type": "java.lang.String",
+      "sourceType": "com.lettuce.air.common.base.HuaweiIotProperties"
+    },
+    {
+      "name": "huawei-iot.config.command-execute-time",
+      "type": "java.lang.Long",
+      "sourceType": "com.lettuce.air.common.base.HuaweiIotProperties"
+    },
+    {
+      "name": "yingyan.api.addpoint-url",
+      "type": "java.lang.String",
+      "sourceType": "com.lettuce.air.common.api.YingyanApiUrl"
+    },
+    {
+      "name": "yingyan.api.ak",
+      "type": "java.lang.String",
+      "sourceType": "com.lettuce.air.common.api.YingyanApiUrl"
+    },
+    {
+      "name": "yingyan.api.service-id",
+      "type": "java.lang.String",
+      "sourceType": "com.lettuce.air.common.api.YingyanApiUrl"
+    }
+  ],
+  "hints": []
+}
